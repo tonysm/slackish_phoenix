@@ -66,5 +66,26 @@ defmodule SlackishPhoenix.AuthTest do
       user = user_fixture()
       assert %Ecto.Changeset{} = Auth.change_user(user)
     end
+
+    test "find_or_create_from_auth/1 creates user when new" do
+      ueberauth_response = %{
+        uid: "abc123",
+        info: %{
+          first_name: "Tony",
+          last_name: "Messias",
+          email: "tony@mwl.be",
+          image: "http://example.com/avatar.png",
+        }
+      }
+
+      assert {:ok, %User{} = user} = Auth.find_or_create_from_auth(ueberauth_response)
+      assert user.email == "tony@mwl.be"
+      assert user.google_id == "abc123"
+      assert user.image_url == "http://example.com/avatar.png"
+      assert user.name == "Tony Messias"
+    end
+
+    test "find_or_create_from_auth/1 returns existing user when already created" do
+    end
   end
 end
