@@ -19,6 +19,13 @@ defmodule SlackishPhoenixWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/auth", SlackishPhoenixWeb do
+    pipe_through :browser
+
+    get "/:provider", AuthController, :request
+    get "/:provider/callback", AuthController, :callback
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", SlackishPhoenixWeb do
   #   pipe_through :api
