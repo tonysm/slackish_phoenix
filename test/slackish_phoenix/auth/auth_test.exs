@@ -9,6 +9,15 @@ defmodule SlackishPhoenix.AuthTest do
     @valid_attrs %{email: "some email", google_id: "some google_id", image_url: "some image_url", name: "some name"}
     @update_attrs %{email: "some updated email", google_id: "some updated google_id", image_url: "some updated image_url", name: "some updated name"}
     @invalid_attrs %{email: nil, google_id: nil, image_url: nil, name: nil}
+    @ueberauth_response %{
+      uid: "abc123",
+      info: %{
+        first_name: "Tony",
+        last_name: "Messias",
+        email: "tony@mwl.be",
+        image: "http://example.com/avatar.png",
+      }
+    }
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =
@@ -68,17 +77,7 @@ defmodule SlackishPhoenix.AuthTest do
     end
 
     test "find_or_create_from_auth/1 creates user when new" do
-      ueberauth_response = %{
-        uid: "abc123",
-        info: %{
-          first_name: "Tony",
-          last_name: "Messias",
-          email: "tony@mwl.be",
-          image: "http://example.com/avatar.png",
-        }
-      }
-
-      assert {:ok, %User{} = user} = Auth.find_or_create_from_auth(ueberauth_response)
+      assert {:ok, %User{} = user} = Auth.find_or_create_from_auth(@ueberauth_response)
       assert user.email == "tony@mwl.be"
       assert user.google_id == "abc123"
       assert user.image_url == "http://example.com/avatar.png"
