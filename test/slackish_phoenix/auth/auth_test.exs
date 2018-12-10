@@ -85,6 +85,14 @@ defmodule SlackishPhoenix.AuthTest do
     end
 
     test "find_or_create_from_auth/1 returns existing user when already created" do
+      user_fixture(%{google_id: "abc123"})
+      
+      assert {:ok, %User{} = user} = Auth.find_or_create_from_auth(@ueberauth_response)
+      assert user.google_id == "abc123"
+
+      total_users = Auth.list_users()
+
+      assert length(total_users) == 1
     end
   end
 end
