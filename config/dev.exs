@@ -73,3 +73,5 @@ config :slackish_phoenix, SlackishPhoenix.Repo,
   database: "slackish_phoenix_dev",
   hostname: "localhost",
   pool_size: 10
+
+import_config "dev.secret.exs"
