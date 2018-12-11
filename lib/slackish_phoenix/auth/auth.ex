@@ -38,6 +38,12 @@ defmodule SlackishPhoenix.Auth do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
+    Finds the user or returns nil.
+  """
+  def get_user(nil), do: nil
+  def get_user(id), do: Repo.get(User, id)
+
+  @doc """
   Creates a user.
 
   ## Examples
