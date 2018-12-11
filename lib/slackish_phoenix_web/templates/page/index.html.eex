@@ -31,7 +31,7 @@
                 </div>
                 <div>
                     <%= if @conn.assigns[:user] do %>
-                        <a href="/" class="inline-block px-4 py-2 leading-none border rounded text-grey-dark border-grey-dark no-underline hover:border-grey hover:text-grey-darker hover:bg-white mt-4 lg:mt-0">Home</a>
+                        <a href="/home" class="inline-block px-4 py-2 leading-none border rounded text-grey-dark border-grey-dark no-underline hover:border-grey hover:text-grey-darker hover:bg-white mt-4 lg:mt-0">Home</a>
                     <% else %>
                         <a href="/auth/google" class="inline-block px-4 py-2 leading-none border rounded text-grey-dark border-grey-dark no-underline hover:border-grey hover:text-grey-darker hover:bg-white mt-4 lg:mt-0">Login with Google</a>
                     <% end %>
