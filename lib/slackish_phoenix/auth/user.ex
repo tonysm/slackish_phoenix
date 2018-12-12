@@ -16,7 +16,7 @@ defmodule SlackishPhoenix.Auth.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:name, :email, :google_id, :image_url])
+    |> cast(attrs, [:name, :email, :google_id, :image_url, :current_company_id])
     |> validate_required([:name, :email, :google_id, :image_url])
     |> unique_constraint(:email)
   end
