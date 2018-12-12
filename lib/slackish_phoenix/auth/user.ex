@@ -8,6 +8,7 @@ defmodule SlackishPhoenix.Auth.User do
     field :google_id, :string
     field :image_url, :string
     field :name, :string
+    field :current_company_id, :integer
 
     timestamps()
   end

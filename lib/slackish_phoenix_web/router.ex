@@ -19,6 +19,7 @@ defmodule SlackishPhoenixWeb.Router do
 
     get "/", PageController, :index
     get "/home", HomeController, :index
+    resources "companies", CompanyController, only: [:new]
   end
 
   scope "/auth", SlackishPhoenixWeb do

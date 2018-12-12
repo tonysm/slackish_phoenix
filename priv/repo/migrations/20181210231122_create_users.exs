@@ -7,6 +7,7 @@ defmodule SlackishPhoenix.Repo.Migrations.CreateUsers do
       add :email, :string
       add :google_id, :string
       add :image_url, :string
+      add :current_company_id, :integer
 
       timestamps()
     end
