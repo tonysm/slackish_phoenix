@@ -80,6 +80,21 @@ defmodule SlackishPhoenix.Auth do
   end
 
   @doc """
+  Assigns a company to a user
+
+  ## Examples
+
+      iex> assign_current_company(user, 123)
+      {:ok, %User{}}
+
+  """
+  def assign_current_company(%User{} = user, company_id) do
+    user
+    |> User.changeset(%{current_company_id: company_id})
+    |> Repo.update()
+  end
+
+  @doc """
   Deletes a User.
 
   ## Examples

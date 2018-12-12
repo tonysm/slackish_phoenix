@@ -38,6 +38,15 @@ defmodule SlackishPhoenix.AuthTest do
       user
     end
 
+    def company_fixture(attrs \\ %{}) do
+      {:ok, company} =
+        attrs
+        |> Enum.into(%{name: "madewithlove"})
+        |> SlackishPhoenix.Companies.create_company()
+
+      company
+    end
+
     test "list_users/0 returns all users" do
       user = user_fixture()
       assert Auth.list_users() == [user]
@@ -103,6 +112,14 @@ defmodule SlackishPhoenix.AuthTest do
       total_users = Auth.list_users()
 
       assert length(total_users) == 1
+    end
+
+    test "assign_current_company/2 assigns a company to an existing user" do
+      user = user_fixture()
+      company = company_fixture(%{owner_id: user.id})
+
+      assert {:ok, %User{} = user} = Auth.assign_current_company(user, company.id)
+      assert user.current_company_id == company.id
     end
   end
 end
