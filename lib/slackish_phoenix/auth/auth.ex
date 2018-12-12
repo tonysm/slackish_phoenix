@@ -115,19 +115,22 @@ defmodule SlackishPhoenix.Auth do
     params = parse_params(auth)
 
     case get_by_google_id(params.google_id) do
-      {:ok, nil}
-        -> create_user(params)
-      {:ok, %User{} = user}
-        -> {:ok, user}
-      {:error, _msg}
-        -> {:error, "Something went wrong"}
+      {:ok, nil} ->
+        create_user(params)
+
+      {:ok, %User{} = user} ->
+        {:ok, user}
+
+      {:error, _msg} ->
+        {:error, "Something went wrong"}
     end
   end
 
   defp get_by_google_id(google_id) do
-    user = from(u in User, where: u.google_id == ^google_id)
-       |> first
-       |> Repo.one
+    user =
+      from(u in User, where: u.google_id == ^google_id)
+      |> first
+      |> Repo.one()
 
     {:ok, user}
   end
@@ -137,12 +140,12 @@ defmodule SlackishPhoenix.Auth do
       email: auth.info.email,
       name: build_name(auth),
       image_url: auth.info.image,
-      google_id: auth.uid,
+      google_id: auth.uid
     }
   end
 
   defp build_name(auth) do
     "#{auth.info.first_name} #{auth.info.last_name}"
-      |> String.trim
+    |> String.trim()
   end
 end

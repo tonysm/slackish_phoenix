@@ -4,6 +4,6 @@ defmodule SlackishPhoenixWeb.CompanyController do
   plug SlackishPhoenixWeb.Plugs.RequireAuth
 
   def new(conn, _params) do
-    text conn, "Show create company form"
+    text(conn, "Show create company form")
   end
 end

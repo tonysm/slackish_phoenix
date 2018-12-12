@@ -36,9 +36,10 @@ defmodule SlackishPhoenixWeb.Router do
   # end
 
   defp detect_user_in_session(conn, _params) do
-    user = conn
-       |> get_session(:current_user)
-       |> SlackishPhoenix.Auth.get_user
+    user =
+      conn
+      |> get_session(:current_user)
+      |> SlackishPhoenix.Auth.get_user()
 
     case user do
       nil -> conn

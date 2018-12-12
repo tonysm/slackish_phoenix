@@ -6,8 +6,18 @@ defmodule SlackishPhoenix.AuthTest do
   describe "users" do
     alias SlackishPhoenix.Auth.User
 
-    @valid_attrs %{email: "some email", google_id: "some google_id", image_url: "some image_url", name: "some name"}
-    @update_attrs %{email: "some updated email", google_id: "some updated google_id", image_url: "some updated image_url", name: "some updated name"}
+    @valid_attrs %{
+      email: "some email",
+      google_id: "some google_id",
+      image_url: "some image_url",
+      name: "some name"
+    }
+    @update_attrs %{
+      email: "some updated email",
+      google_id: "some updated google_id",
+      image_url: "some updated image_url",
+      name: "some updated name"
+    }
     @invalid_attrs %{email: nil, google_id: nil, image_url: nil, name: nil}
     @ueberauth_response %{
       uid: "abc123",
@@ -15,7 +25,7 @@ defmodule SlackishPhoenix.AuthTest do
         first_name: "Tony",
         last_name: "Messias",
         email: "tony@mwl.be",
-        image: "http://example.com/avatar.png",
+        image: "http://example.com/avatar.png"
       }
     }
 

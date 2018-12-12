@@ -5,6 +5,6 @@ defmodule SlackishPhoenixWeb.HomeController do
   plug SlackishPhoenixWeb.Plugs.RequireCompany
 
   def index(conn, _params) do
-    text conn, "Works"
+    text(conn, "Works")
   end
 end

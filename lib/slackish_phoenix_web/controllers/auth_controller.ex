@@ -13,10 +13,11 @@ defmodule SlackishPhoenixWeb.AuthController do
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     case Auth.find_or_create_from_auth(auth) do
-      {:ok, user}
-        -> conn
-          |> put_session(:current_user, user.id)
-          |> redirect(to: "/home")
+      {:ok, user} ->
+        conn
+        |> put_session(:current_user, user.id)
+        |> redirect(to: "/home")
+
       {:error, reason} ->
         conn
         |> put_flash(:error, reason)

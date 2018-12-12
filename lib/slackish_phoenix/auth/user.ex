@@ -2,7 +2,6 @@ defmodule SlackishPhoenix.Auth.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-
   schema "users" do
     field :email, :string
     field :google_id, :string
