@@ -1,5 +1,6 @@
 <script charset="utf-8">
   window.userToken = "<%= @token %>";
+  window.currentCompanyId = "<%= @conn.assigns[:user].current_company_id %>";
 </script>
 
 <div class="bg-grey-lightest h-screen">
