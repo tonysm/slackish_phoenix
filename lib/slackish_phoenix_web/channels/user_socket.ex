@@ -4,7 +4,7 @@ defmodule SlackishPhoenixWeb.UserSocket do
   alias SlackishPhoenixWeb.Auth.UserTokenManager
 
   ## Channels
-  # channel "room:*", SlackishPhoenixWeb.RoomChannel
+  channel "company:*", SlackishPhoenixWeb.CompanyChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

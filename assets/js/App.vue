@@ -15,6 +15,7 @@
 
 <script>
     import ChatApp from './components/ChatApp.vue';
+    import { connector } from './socket'
 
     export default {
         components: {
@@ -30,9 +31,18 @@
                 users: [],
             };
         },
+        socket: null,
+        companyChannel: null,
         methods: {
-            newMessage() {},
-            newChannel() {},
+            newMessage(msg) {
+                console.log(msg)
+
+            },
+            newChannel(channel) {
+                this.$options.companyChannel.push(`companies:${window.currentCompanyId}`, {
+                    channel,
+                });
+            },
             joinChannel(channel) {
                 console.log(channel);
                 /**
@@ -63,37 +73,27 @@
                  */
             },
             logout() {
-                console.log('logout')
+                window.location = '/auth/logout';
             }
         },
         mounted() {
-            /** 
-            Echo.join(`companies.${window.Laravel.company.id}`)
-                .here((users) => {
-                    this.$store.commit({
-                        type: LOAD_USERS,
-                        users,
-                    });
+            const socket = connector(window.userToken);
+
+            const channel = socket.channel(`company:${window.currentCompanyId}`)
+
+            channel.join()
+                .receive("ok", ({company, user}) => {
+                    this.user = user;
+                    this.company = company;
+                    this.users = [user];
                 })
-                .joining((user) => {
-                    this.$store.commit({
-                        type: USER_JOINED,
-                        user,
-                    });
-                })
-                .leaving((user) => {
-                    this.$store.commit({
-                        type: USER_LEFT,
-                        user,
-                    });
-                })
-                .listen('ChannelCreated', (e) => {
-                    this.$store.commit({
-                        type: NEW_CHANNEL,
-                        channel: e.channel
-                    });
-                });
-            */
+                
+            channel.on(`companies:${window.currentCompanyId}:new`, ({channel}) => {
+                this.channels.push(channel);
+            });
+
+            this.$options.socket = socket;
+            this.$options.companyChannel = channel;
         }
     }
 </script>

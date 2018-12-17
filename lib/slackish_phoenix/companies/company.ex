@@ -2,6 +2,8 @@ defmodule SlackishPhoenix.Companies.Company do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:name, :id]}
+
   schema "companies" do
     field :name, :string
     field :owner_id, :integer
