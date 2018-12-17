@@ -4,7 +4,11 @@ defmodule SlackishPhoenixWeb.HomeController do
   plug SlackishPhoenixWeb.Plugs.RequireAuth
   plug SlackishPhoenixWeb.Plugs.RequireCompany
 
+  alias SlackishPhoenixWeb.Auth.UserTokenManager
+
   def index(conn, _params) do
-    text(conn, "Works")
+    {:ok, token} = UserTokenManager.issue_token(conn.assigns[:user])
+
+    render(conn, "index.html", token: token)
   end
 end
