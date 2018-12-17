@@ -21,6 +21,13 @@ defmodule SlackishPhoenix.Chat do
     Repo.all(Channel)
   end
 
+  @doc false
+  def list_channels_of_company(company_id) do
+    query = from c in Channel, where: c.company_id == ^company_id
+
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single channel.
 

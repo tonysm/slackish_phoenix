@@ -39,7 +39,7 @@
 
             },
             newChannel(channel) {
-                this.$options.companyChannel.push(`companies:${window.currentCompanyId}`, {
+                this.$options.companyChannel.push(`company:${window.currentCompanyId}`, {
                     channel,
                 });
             },
@@ -82,13 +82,15 @@
             const channel = socket.channel(`company:${window.currentCompanyId}`)
 
             channel.join()
-                .receive("ok", ({company, user}) => {
+                .receive("ok", ({company, user, channels}) => {
                     this.user = user;
                     this.company = company;
                     this.users = [user];
+
+                    this.channels = channels;
                 })
-                
-            channel.on(`companies:${window.currentCompanyId}:new`, ({channel}) => {
+
+            channel.on(`company:${window.currentCompanyId}:new`, ({channel}) => {
                 this.channels.push(channel);
             });
 
