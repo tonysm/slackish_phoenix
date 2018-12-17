@@ -20,7 +20,7 @@ defmodule SlackishPhoenixWeb.Auth.UserTokenManager do
         {:ok, user_id}
 
       {:error, _} ->
-        :error
+        {:error}
     end
   end
 

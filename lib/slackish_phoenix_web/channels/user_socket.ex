@@ -1,6 +1,8 @@
 defmodule SlackishPhoenixWeb.UserSocket do
   use Phoenix.Socket
 
+  alias SlackishPhoenixWeb.Auth.UserTokenManager
+
   ## Channels
   # channel "room:*", SlackishPhoenixWeb.RoomChannel
 
@@ -15,8 +17,18 @@ defmodule SlackishPhoenixWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
-  def connect(_params, socket, _connect_info) do
-    {:ok, socket}
+  def connect(%{"token" => token}, socket, _connect_info) do
+    case UserTokenManager.decode_token(socket, token) do
+      {:ok, user_id} ->
+        {:ok, assign(socket, :user_id, user_id)}
+
+      {:error} ->
+        :error
+    end
+  end
+
+  def connet(_params, _socket, _connect_info) do
+    :error
   end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:

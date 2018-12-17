@@ -24,6 +24,6 @@ defmodule SlackishPhoenixWeb.Auth.UserTokenManagerTest do
     token = "invalid-token"
     socket = %Phoenix.Socket{endpoint: SlackishPhoenixWeb.Endpoint}
 
-    assert :error == UserTokenManager.decode_token(socket, token)
+    assert {:error} == UserTokenManager.decode_token(socket, token)
   end
 end
