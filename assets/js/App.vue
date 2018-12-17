@@ -14,6 +14,8 @@
 </template>
 
 <script>
+    import { Presence } from 'phoenix'
+
     import ChatApp from './components/ChatApp.vue';
     import { connector } from './socket'
 
@@ -74,18 +76,32 @@
             },
             logout() {
                 window.location = '/auth/logout';
-            }
+            },
+            syncUsers(presence) {
+                let users = [];
+
+                presence.list((id, {metas: [first, ...rest]}) => {
+                    users.push(first.user)
+                });
+
+                this.users = users;
+            },
         },
         mounted() {
             const socket = connector(window.userToken);
 
             const channel = socket.channel(`company:${window.currentCompanyId}`)
 
+            const presence = new Presence(channel)
+
+            presence.onSync(() => {
+                this.syncUsers(presence);
+            });
+
             channel.join()
                 .receive("ok", ({company, user, channels}) => {
                     this.user = user;
                     this.company = company;
-                    this.users = [user];
 
                     this.channels = channels;
                 })

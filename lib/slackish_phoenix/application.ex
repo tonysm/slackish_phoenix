@@ -11,9 +11,10 @@ defmodule SlackishPhoenix.Application do
       # Start the Ecto repository
       SlackishPhoenix.Repo,
       # Start the endpoint when the application starts
-      SlackishPhoenixWeb.Endpoint
+      SlackishPhoenixWeb.Endpoint,
       # Starts a worker by calling: SlackishPhoenix.Worker.start_link(arg)
       # {SlackishPhoenix.Worker, arg},
+      SlackishPhoenixWeb.Presence
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
