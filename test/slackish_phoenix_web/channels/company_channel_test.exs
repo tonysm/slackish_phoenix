@@ -56,7 +56,9 @@ defmodule SlackishPhoenixWeb.CompanyChannelTest do
 
     socket |> push("company:#{company.id}", %{"channel" => "general"})
 
-    assert_broadcast _, %{channel: %SlackishPhoenix.Chat.Channel{} = channel}
+    assert_broadcast channel_name, %{channel: %SlackishPhoenix.Chat.Channel{} = channel}
+
+    assert channel_name == "company:#{company.id}:new"
     assert channel.name == "general"
     assert channel.company_id == company.id
   end

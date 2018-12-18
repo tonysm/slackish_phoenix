@@ -55,8 +55,9 @@ defmodule SlackishPhoenixWeb.ChannelChannelTest do
       "uuid" => "some-fake-uuid"
     })
 
-    assert_broadcast _, event
+    assert_broadcast channel_name, event
 
+    assert channel_name == "channels:#{channel.id}:new_message"
     assert event.id == "some-fake-uuid"
     assert event.message == "hello from the other side"
     assert event.user.id == user.id
