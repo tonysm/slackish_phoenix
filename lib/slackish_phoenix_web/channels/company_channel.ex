@@ -46,16 +46,13 @@ defmodule SlackishPhoenixWeb.CompanyChannel do
 
     case Chat.create_channel(params) do
       {:ok, channel} ->
-        IO.inspect(channel)
-
         broadcast!(socket, "company:#{company_id}:new", %{
           channel: channel
         })
 
         {:reply, :ok, socket}
 
-      {:error, reason} ->
-        IO.inspect(reason)
+      {:error, _reason} ->
         {:reply, :error, socket}
     end
   end

@@ -104,7 +104,7 @@
                     this.company = company;
 
                     this.channels = channels;
-                })
+                });
 
             channel.on(`company:${window.currentCompanyId}:new`, ({channel}) => {
                 this.channels.push(channel);

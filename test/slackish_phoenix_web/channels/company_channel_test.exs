@@ -47,4 +47,17 @@ defmodule SlackishPhoenixWeb.CompanyChannelTest do
     assert company.id == replied_company.id
     assert user.id == replied_user.id
   end
+
+  test "handle_in/3 creates the channel", %{socket: socket, user: user} do
+    company = company_fixture(%{owner_id: user.id})
+
+    {:ok, _, socket} =
+      socket |> subscribe_and_join(SlackishPhoenixWeb.CompanyChannel, "company:#{company.id}")
+
+    socket |> push("company:#{company.id}", %{"channel" => "general"})
+
+    assert_broadcast _, %{channel: %SlackishPhoenix.Chat.Channel{} = channel}
+    assert channel.name == "general"
+    assert channel.company_id == company.id
+  end
 end
