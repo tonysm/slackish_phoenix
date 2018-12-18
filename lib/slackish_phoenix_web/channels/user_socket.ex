@@ -5,6 +5,7 @@ defmodule SlackishPhoenixWeb.UserSocket do
 
   ## Channels
   channel "company:*", SlackishPhoenixWeb.CompanyChannel
+  channel "channels:*", SlackishPhoenixWeb.ChannelChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After

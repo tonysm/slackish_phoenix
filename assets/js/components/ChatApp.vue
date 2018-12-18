@@ -91,14 +91,14 @@
             <!-- Chat messages -->
             <div class="px-6 py-4 flex-1 overflow-y-scroll" ref="chat">
                 <!-- A message -->
-                <div class="flex items-start mb-4 text-sm" v-for="message in messages" :key="message.uuid">
-                    <img :src="message.user.avatar_path" class="w-10 h-10 rounded mr-3">
+                <div class="flex items-start mb-4 text-sm" v-for="message in messages" :key="message.id">
+                    <img :src="message.user.image_url" class="w-10 h-10 rounded mr-3">
                     <div class="flex-1 overflow-hidden">
                         <div>
                             <span class="font-bold">{{ message.user.name }}</span>
-                            <span class="text-grey text-xs">{{ message.sentAt }}</span>
+                            <span class="text-grey text-xs">{{ message.sent_at | forHumans }}</span>
                         </div>
-                        <p class="text-black leading-normal">{{ message.content }}</p>
+                        <p class="text-black leading-normal">{{ message.message }}</p>
                     </div>
                 </div>
 
@@ -122,6 +122,8 @@
 </template>
 
 <script>
+    import moment from 'moment'
+
     export default {
         props: [
             'channels',
@@ -137,6 +139,11 @@
                 newChannel: '',
                 showForm: false,
             };
+        },
+        filters: {
+            forHumans(unixTimestamp) {
+              return moment.unix(unixTimestamp).format('LTS')
+            }
         },
         methods: {
             joinChannel (channel) {
