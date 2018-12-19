@@ -5,8 +5,9 @@ defmodule SlackishPhoenix.Chat.Channel do
   @derive {Jason.Encoder, only: [:name, :id, :company_id]}
 
   schema "channels" do
-    field :company_id, :integer
     field :name, :string
+
+    belongs_to :company, SlackishPhoenix.Companies.Company
 
     timestamps()
   end

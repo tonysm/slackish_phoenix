@@ -6,7 +6,8 @@ defmodule SlackishPhoenix.Companies.Company do
 
   schema "companies" do
     field :name, :string
-    field :owner_id, :integer
+
+    belongs_to :owner, SlackishPhoenix.Auth.User
 
     timestamps()
   end

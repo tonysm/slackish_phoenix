@@ -45,7 +45,8 @@ defmodule SlackishPhoenix.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:ueberauth_google, "~> 0.7"},
       {:poison, "~> 3.1"},
-      {:mix_test_watch, "~> 0.8", only: :dev, runtime: false}
+      {:mix_test_watch, "~> 0.8", only: :dev, runtime: false},
+      {:ex_machina, "~> 2.2", only: [:dev, :test]}
     ]
   end
 
