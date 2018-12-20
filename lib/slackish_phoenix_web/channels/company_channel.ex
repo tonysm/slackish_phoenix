@@ -12,13 +12,19 @@ defmodule SlackishPhoenixWeb.CompanyChannel do
     company_id = company_id |> String.to_integer()
 
     user = user_id |> Auth.get_user!()
-    company = company_id |> Companies.get_company!()
-    channels = company_id |> Chat.list_channels_of_company()
 
-    send(self(), :after_join)
+    case Companies.get_company_for_user(user, company_id) do
+      %SlackishPhoenix.Companies.Company{} = company ->
+        channels = company_id |> Chat.list_channels_of_company()
 
-    {:ok, %{company: company, user: user, channels: channels},
-     assign(socket, :company_id, company_id)}
+        send(self(), :after_join)
+
+        {:ok, %{company: company, user: user, channels: channels},
+         assign(socket, :company_id, company_id)}
+
+      nil ->
+        {:error, reason: "You are not a member of this company."}
+    end
   end
 
   def handle_info(:after_join, socket) do

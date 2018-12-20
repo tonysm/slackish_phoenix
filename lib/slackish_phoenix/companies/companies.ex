@@ -137,6 +137,17 @@ defmodule SlackishPhoenix.Companies do
 
   @doc false
   def get_company_for_user!(%User{} = user, company_id) do
+    build_company_for_user_query(user, company_id)
+    |> Repo.one!()
+  end
+
+  @doc false
+  def get_company_for_user(%User{} = user, company_id) do
+    build_company_for_user_query(user, company_id)
+    |> Repo.one()
+  end
+
+  defp build_company_for_user_query(%User{} = user, company_id) do
     query =
       from c in Company,
         join: u in "company_user",
@@ -145,6 +156,6 @@ defmodule SlackishPhoenix.Companies do
         where: c.id == ^company_id,
         select: c
 
-    Repo.one!(query |> first)
+    query |> first
   end
 end

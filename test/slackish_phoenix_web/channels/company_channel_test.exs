@@ -1,6 +1,9 @@
 defmodule SlackishPhoenixWeb.CompanyChannelTest do
   use SlackishPhoenixWeb.ChannelCase
 
+  alias SlackishPhoenix.Companies
+  alias SlackishPhoenixWeb.CompanyChannel
+
   import SlackishPhoenix.Factory
 
   setup do
@@ -12,9 +15,10 @@ defmodule SlackishPhoenixWeb.CompanyChannelTest do
 
   test "join returns current user and company", %{socket: socket, user: user} do
     company = insert(:company, %{owner_id: user.id})
+    Companies.add_user_to_company(user, company)
 
     {:ok, %{company: replied_company, user: replied_user}, _socket} =
-      SlackishPhoenixWeb.CompanyChannel.join(
+      CompanyChannel.join(
         "company:#{company.id}",
         %{},
         socket
@@ -24,11 +28,17 @@ defmodule SlackishPhoenixWeb.CompanyChannelTest do
     assert user.id == replied_user.id
   end
 
+  test "join returns error when user is not member of company", %{socket: socket} do
+    company = insert(:company)
+
+    assert {:error, _reason} = CompanyChannel.join("company:#{company.id}", %{}, socket)
+  end
+
   test "handle_in/3 creates the channel", %{socket: socket, user: user} do
     company = insert(:company, %{owner_id: user.id})
+    Companies.add_user_to_company(user, company)
 
-    {:ok, _, socket} =
-      socket |> subscribe_and_join(SlackishPhoenixWeb.CompanyChannel, "company:#{company.id}")
+    {:ok, _, socket} = socket |> subscribe_and_join(CompanyChannel, "company:#{company.id}")
 
     socket |> push("company:#{company.id}", %{"channel" => "general"})
 
