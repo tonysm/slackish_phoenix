@@ -2,6 +2,7 @@ defmodule SlackishPhoenix.ChatTest do
   use SlackishPhoenix.DataCase
 
   alias SlackishPhoenix.Chat
+  alias SlackishPhoenix.Companies
 
   import SlackishPhoenix.Factory
 
@@ -69,6 +70,18 @@ defmodule SlackishPhoenix.ChatTest do
       channels = Chat.list_channels_of_company(company_with_channels.id)
 
       assert length(channels) == 3
+    end
+
+    test "can_access_channel_by_user_id/2 checks if given user can access given channel" do
+      company = insert(:company)
+      user_from_company = insert(:user)
+      user_not_from_company = insert(:user)
+      channel = insert(:channel, %{company_id: company.id})
+
+      Companies.add_user_to_company(user_from_company, company)
+
+      assert true == Chat.can_access_channel_by_user_id(user_from_company.id, channel.id)
+      assert false == Chat.can_access_channel_by_user_id(user_not_from_company.id, channel.id)
     end
   end
 end

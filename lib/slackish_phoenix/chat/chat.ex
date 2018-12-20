@@ -108,4 +108,22 @@ defmodule SlackishPhoenix.Chat do
   def change_channel(%Channel{} = channel) do
     Channel.changeset(channel, %{})
   end
+
+  def can_access_channel_by_user_id(user_id, channel_id) do
+    query =
+      from c in Channel,
+        join: u in "company_user",
+        on: u.company_id == c.company_id,
+        where: u.user_id == ^user_id,
+        where: c.id == ^channel_id,
+        select: c
+
+    case Repo.one(query |> first) do
+      nil ->
+        false
+
+      _channel ->
+        true
+    end
+  end
 end

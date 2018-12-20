@@ -2,9 +2,18 @@ defmodule SlackishPhoenixWeb.ChannelChannel do
   use SlackishPhoenixWeb, :channel
 
   alias SlackishPhoenix.Auth
+  alias SlackishPhoenix.Chat
 
   def join("channels:" <> channel_id, _payload, socket) do
-    {:ok, %{}, assign(socket, :channel_id, channel_id |> String.to_integer())}
+    user_id = socket.assigns[:user_id]
+
+    case Chat.can_access_channel_by_user_id(user_id, channel_id) do
+      true ->
+        {:ok, %{}, assign(socket, :channel_id, channel_id |> String.to_integer())}
+
+      false ->
+        {:error, reason: "You cannot access this channel."}
+    end
   end
 
   def handle_in(_name, %{"message" => message, "uuid" => id}, socket) do

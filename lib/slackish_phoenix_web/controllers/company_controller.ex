@@ -18,6 +18,7 @@ defmodule SlackishPhoenixWeb.CompanyController do
     case Companies.create_company(params |> Map.put("owner_id", user.id)) do
       {:ok, company} ->
         Auth.assign_current_company(user, company.id)
+        Companies.add_user_to_company(user, company)
         conn |> redirect(to: SlackishPhoenixWeb.Router.Helpers.home_path(conn, :index))
 
       {:error, changeset} ->
