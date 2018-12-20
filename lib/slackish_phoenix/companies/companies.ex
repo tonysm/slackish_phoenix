@@ -6,6 +6,7 @@ defmodule SlackishPhoenix.Companies do
   import Ecto.Query, warn: false
   alias SlackishPhoenix.Repo
 
+  alias SlackishPhoenix.Auth.User
   alias SlackishPhoenix.Companies.Company
 
   @doc """
@@ -100,5 +101,50 @@ defmodule SlackishPhoenix.Companies do
   """
   def change_company(%Company{} = company) do
     Company.changeset(company, %{})
+  end
+
+  @doc """
+  Associates an `%SlackishPhoenix.Auth.User` with a `%SlackishPhoenix.Companies.Company`.
+  """
+  def add_user_to_company(
+        %SlackishPhoenix.Auth.User{} = user,
+        %SlackishPhoenix.Companies.Company{} = company
+      ) do
+    user = user |> Repo.preload(:companies)
+    companies = (user.companies ++ [company]) |> Enum.map(&Ecto.Changeset.change/1)
+
+    user
+    |> Ecto.Changeset.change()
+    |> Ecto.Changeset.put_assoc(:companies, companies)
+    |> Repo.update!()
+
+    {:ok}
+  end
+
+  @doc false
+  def list_all_companies_of_user(%User{} = user) do
+    user = user |> Repo.preload(:companies)
+
+    user.companies
+  end
+
+  @doc false
+  def list_all_users_of_company(%Company{} = company) do
+    company = company |> Repo.preload(:users)
+
+    company.users
+  end
+
+  @doc false
+  def get_company_for_user!(%User{} = user, company_id) do
+    query =
+      from c in Company,
+        join: u in "company_user",
+        on: u.company_id == c.id,
+        where: u.user_id == ^user.id,
+        where: c.id == ^company_id,
+        select: c
+
+    Repo.one!(query |> first)
   end
 end

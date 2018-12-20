@@ -11,6 +11,8 @@ defmodule SlackishPhoenix.Auth.User do
     field :name, :string
     field :current_company_id, :integer
 
+    many_to_many :companies, SlackishPhoenix.Companies.Company, join_through: "company_user"
+
     timestamps()
   end
 

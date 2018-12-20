@@ -8,6 +8,7 @@ defmodule SlackishPhoenix.Companies.Company do
     field :name, :string
 
     belongs_to :owner, SlackishPhoenix.Auth.User
+    many_to_many :users, SlackishPhoenix.Auth.User, join_through: "company_user"
 
     timestamps()
   end

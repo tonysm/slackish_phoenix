@@ -2,6 +2,7 @@ defmodule SlackishPhoenix.CompaniesTest do
   use SlackishPhoenix.DataCase
 
   alias SlackishPhoenix.Companies
+  alias SlackishPhoenix.Companies.Company
 
   import SlackishPhoenix.Factory
 
@@ -58,6 +59,25 @@ defmodule SlackishPhoenix.CompaniesTest do
     test "change_company/1 returns a company changeset" do
       company = insert(:company)
       assert %Ecto.Changeset{} = Companies.change_company(company)
+    end
+
+    test "add_user_to_company/2 associates a user with a company" do
+      company = insert(:company)
+      user = insert(:user)
+
+      assert {:ok} = Companies.add_user_to_company(user, company)
+      assert [company] == Companies.list_all_companies_of_user(user)
+      assert [user] == Companies.list_all_users_of_company(company)
+    end
+
+    test "get_company_of_user!/2 returns the company fetching from a user association" do
+      company = insert(:company)
+      user = insert(:user)
+
+      Companies.add_user_to_company(user, company)
+
+      assert %Company{} = found_company = Companies.get_company_for_user!(user, company.id)
+      assert found_company.id == company.id
     end
   end
 end
