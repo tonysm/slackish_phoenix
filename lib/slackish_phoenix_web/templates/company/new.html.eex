@@ -1,23 +1,40 @@
 <div class="bg-grey-lightest h-screen">
-    <div class="container mx-auto flex justify-content">
+    <%= if length(@companies) > 0 do %>
+    <div class="container mx-auto flex justify-content mb-4">
         <div class="w-2/3 mx-auto my-4">
-            <p>Pick one of your companies</p>
+            <div class="bg-blue-lightest border-l-4 border-blue text-blue-dark p-4" role="alert">
+                <p class="font-bold">Almost there!</p>
+                <p>In order to proceed, you need to select a company.</p>
+            </div>
+            <p class="block tracking-wide text-grey-darker text-md font-bold mb-2 mt-4">
+              Pick one of your companies
+            </p>
 
-            <ul>
-              <%= for company <- @companies do %>
-                <li>
-                  <a href="<%= "/home/#{company.id}" %>"><%= company.name %></a>
+            <ul class="list-reset flex flex-col">
+              <%= for {company,index} <- Enum.with_index(@companies) do %>
+                <li class="<%= index == 0 && "rounded-t" %> <%= index == length(@companies) - 1 && "rounded-b" %> relative -mb-px block border p-4 border-grey">
+                  <a href="<%= "/home/#{company.id}" %>" class="flex justify-between text-blue-dark no-underline hover:text-blue-light">
+                    <span><%= company.name %></span>
+                    <svg height="15" width="15" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M20 10a10 10 0 1 1-20 0 10 10 0 0 1 20 0zm-2 0a8 8 0 1 0-16 0 8 8 0 0 0 16 0zm-8 2H5V8h5V5l5 5-5 5v-3z"/></svg>
+                  </a>
                 </li>
               <% end %>
             </ul>
         </div>
     </div>
+    <% end %>
     <div class="container mx-auto flex justify-content">
         <div class="w-2/3 mx-auto my-4">
-            <div class="bg-blue-lightest border-l-4 border-blue text-blue-dark p-4" role="alert">
-                <p class="font-bold">Almost there!</p>
-                <p>In order to proceed, you need to create a company.</p>
-            </div>
+            <%= if length(@companies) == 0 do %>
+              <div class="bg-blue-lightest border-l-4 border-blue text-blue-dark p-4" role="alert">
+                  <p class="font-bold">Almost there!</p>
+                  <p>In order to proceed, you need to create a company.</p>
+              </div>
+            <% else %>
+              <div class="bg-blue-lightest border-l-4 border-blue text-blue-dark p-4" role="alert">
+                  <p>Alternatively, you can create a new one.</p>
+              </div>
+            <% end %>
 
             <%= form_for @changeset, Routes.company_path(@conn, :create), fn f -> %>
                 <div class="flex flex-wrap -mx-3 mb-6 mt-6">
