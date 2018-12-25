@@ -1,5 +1,27 @@
 # SlackishPhoenix
 
+I've configured a small setup for docker-compose, just for the database. You can run:
+
+```bash
+docker-compose up -d
+```
+
+to the database up-and-running.
+
+You will need some config keys, create the `config/dev.secret.exs`:
+
+```elixir
+use Mix.Config
+
+config :ueberauth, Ueberauth.Strategy.Google.OAuth,
+  client_id: "<YOUR_GOOGLE_CLIENT_ID>",
+  client_secret: "<YOUR_GOOGE_CLIENT_SECRET>"
+```
+
+Now, follow the common steps.
+
+---
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
