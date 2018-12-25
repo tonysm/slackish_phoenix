@@ -12,9 +12,9 @@ config :logger, level: :warn
 # Configure your database
 config :slackish_phoenix, SlackishPhoenix.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "secret",
   database: "slackish_phoenix_test",
-  hostname: "localhost",
+  hostname: "127.0.0.1",
   pool: Ecto.Adapters.SQL.Sandbox
 
 import_config "test.secret.exs"

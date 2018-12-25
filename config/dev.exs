@@ -69,9 +69,9 @@ config :phoenix, :plug_init_mode, :runtime
 # Configure your database
 config :slackish_phoenix, SlackishPhoenix.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "secret",
   database: "slackish_phoenix_dev",
-  hostname: "localhost",
+  hostname: "127.0.0.1",
   pool_size: 10
 
 import_config "dev.secret.exs"
