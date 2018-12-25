@@ -1,6 +1,19 @@
 <div class="bg-grey-lightest h-screen">
     <div class="container mx-auto flex justify-content">
         <div class="w-2/3 mx-auto my-4">
+            <p>Pick one of your companies</p>
+
+            <ul>
+              <%= for company <- @companies do %>
+                <li>
+                  <a href="<%= "/home/#{company.id}" %>"><%= company.name %></a>
+                </li>
+              <% end %>
+            </ul>
+        </div>
+    </div>
+    <div class="container mx-auto flex justify-content">
+        <div class="w-2/3 mx-auto my-4">
             <div class="bg-blue-lightest border-l-4 border-blue text-blue-dark p-4" role="alert">
                 <p class="font-bold">Almost there!</p>
                 <p>In order to proceed, you need to create a company.</p>

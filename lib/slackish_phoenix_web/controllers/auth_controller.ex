@@ -16,7 +16,7 @@ defmodule SlackishPhoenixWeb.AuthController do
       {:ok, user} ->
         conn
         |> put_session(:current_user, user.id)
-        |> redirect(to: "/home")
+        |> redirect(to: "/companies/new")
 
       {:error, reason} ->
         conn

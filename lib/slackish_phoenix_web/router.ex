@@ -18,7 +18,7 @@ defmodule SlackishPhoenixWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    get "/home", HomeController, :index
+    get "/home/:company", HomeController, :index
     resources "/companies", CompanyController, only: [:new, :create]
   end
 

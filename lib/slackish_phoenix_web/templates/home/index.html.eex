@@ -1,6 +1,6 @@
 <script charset="utf-8">
   window.userToken = "<%= @token %>";
-  window.currentCompanyId = "<%= @conn.assigns[:user].current_company_id %>";
+  window.currentCompanyId = "<%= @company.id %>";
 </script>
 
 <div id="chat-app">

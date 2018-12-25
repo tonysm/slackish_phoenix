@@ -1,24 +1,24 @@
 defmodule SlackishPhoenixWeb.HomeControllerTest do
   use SlackishPhoenixWeb.ConnCase, async: true
 
-  alias SlackishPhoenixWeb.Router.Helpers
-
   import SlackishPhoenix.Factory
 
-  test "GET /home", %{conn: conn} do
-    conn = get(conn, "/home")
-    assert redirected_to(conn) == "/"
-  end
+  alias SlackishPhoenix.Companies
 
-  test "GET /home requires company", %{conn: conn} do
+  test "GET /home/:company fails when company does not exist", %{conn: conn} do
     user = insert(:user)
-    conn = conn |> assign(:user, user) |> get("/home")
-    assert redirected_to(conn) == Helpers.company_path(conn, :new)
+
+    assert_raise Ecto.NoResultsError, fn ->
+      conn |> assign(:user, user) |> get("/home/123")
+    end
   end
 
-  test "GET /home authenticated with company works", %{conn: conn} do
-    user = insert(:user, %{current_company_id: 123})
-    conn = conn |> assign(:user, user) |> get("/home")
+  test "GET /home/:company authenticated with company works", %{conn: conn} do
+    company = insert(:company)
+    user = insert(:user, %{current_company_id: company.id})
+    Companies.add_user_to_company(user, company)
+
+    conn = conn |> assign(:user, user) |> get("/home/#{company.id}")
     assert conn.status != 302
   end
 end
